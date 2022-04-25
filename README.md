@@ -180,3 +180,7 @@ but also in the sense that this is the first time we had to code in
 robotics with so many different variables. This meant that a lot
 more effort had to be put into debugging, first in identifying which function
 had a problem, and then actually fixing the issue. 
+
+### Video
+
+![Particle filter video](particle_filter_video.mov)
