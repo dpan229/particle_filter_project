@@ -78,7 +78,14 @@ more information, the particles converge on the robot's real location.
 
 ### High-level Description
 
-ABC
+To solve this project, we began by generating a cloud of particles across 
+the maze. Every time the robot moves a certain distance, our particles move 
+and turn based off the movement and then use the likelihood field method
+to verify if the particle is valid. From there, we make sure to normalize 
+our particles and resample them to regenerate an increasingly more accurate
+cloud. Using this, as the particles converge, we can estimate where the robot
+is located.
+
 
 ### Components
 
@@ -119,18 +126,57 @@ pointing to the same object.
 
 Location: `ParticleFilter.update_particles_with_motion_model` in particle_filter.py
 
-Code description:
+Code description: Sets the yaw and linear position in accordance with the robot's 
+movement multiplied by a randomly generated number between 0.9 and 1.1 to simulate 
+a small amount of noise.
 
 #### Updating the estimated robot pose
 
 Location: `ParticleFilter.update_estimated_robot_pose` in particle_filter.py
 
-Code description:
+Code description: Finds the average position and direction of all the particles 
+generated. Takes into account the weight of each particle when generating the average.
 
 #### Optimizing the parameters
 
+Location: `ParticleFilter.update_particle_weights_with_measurement_model` in particle_filter.py
+          `ParticleFilter.update_particles_with_motion_model` in particle_filter.py
+          `ParticleFilter.__init__` in particle_filter.py
+Code Description: Modified the impact of noise and size of the Gaussian standard
+deviation to better suit the robot's inaccuracies. Dropped the number of particles
+to 500 and scanned in increments of 15 degrees to optimize the code because it would lag
+out using full particles and a complete scan. 
+
 ### Challenges
+We faced two major challenges. The first was that we originally generated
+our particle cloud in the wrong position, but by zooming out on RVIZ, we 
+realized that we did not take into account the mazes origin for 
+coordinates. The bigger problem, was that our particles would not converge 
+around our robot's position. The movement of the particles was mostly in 
+line with the robot though. To fix this, we first reduced the number of 
+particles used to better see the movement of individual particles, then 
+we tried adjusting noise and the Gaussian standard deviation values. Finally we 
+realized that it was an error of using degrees instead of radians for
+one of our values in our measurement model.
 
 ### Future work
+If we had more time and much more powerful equipment, it would have been 
+nice to run this project using more particles over a full 360 degrees
+scan. In addition, with more time, we might have implemented the 
+extra credit portion of the project, and tried to figure out how to get
+our robot to move based off of position.
 
 ### Takeaways
+1. This project helped a lot to improve our understanding of robot 
+visualization within a fixed environment. Tracking how individual
+particles move in line with the robot's movements and update based 
+off of probabilities, we get a better feeling for how we can use 
+python features to process an environment, which could be helpful
+for the next project.
+2. The other key takeaway was that this project forced us to use 
+multiple functions in tandem. This goes both in the sense that we 
+had to  operate our robot properly while using RVIZ to see the particles,
+but also in the sense that this is the first time we had to code in 
+robotics with so many different variables. This meant that a lot
+more effort had to be put into debugging, first in identifying which function
+had a problem, and then actually fixing the issue. 
