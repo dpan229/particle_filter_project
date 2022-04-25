@@ -181,6 +181,6 @@ robotics with so many different variables. This meant that a lot
 more effort had to be put into debugging, first in identifying which function
 had a problem, and then actually fixing the issue. 
 
-### Video
+### gif
 
-![Particle filter video](particle_filter_video.mov)
+![Particle filter gif](particle_filter_video.gif)
